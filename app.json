@@ -1,8 +1,9 @@
 {
   "expo": {
     "name": "gluCal",
-    "slug": "gluCal",
+    "slug": "glucal",
     "version": "1.0.0",
+    "scheme": "glucal",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -22,6 +23,10 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ]
   }
 }
