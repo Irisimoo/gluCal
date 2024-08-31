@@ -17,7 +17,7 @@ const insulinCalcScreen = () => {
       const correctionFactor: number = 2;
       const negativeCorrectionFactor: number = 2;
       const hasNegativieCorrFactor: boolean = true;
-  
+
       // calculate insulin dose
       let initialValue: number = parseFloat(carbs) / parseFloat(ratio); // account for carbs
       // account for blood glucose
@@ -29,7 +29,7 @@ const insulinCalcScreen = () => {
       }
 
       setInsulinDose(withGlucoseCorrection);
-      
+
       // add insulin dose entry to asyncstorage
       const newInsulinLogEntry = {
         date: Date.now(),
@@ -48,12 +48,11 @@ const insulinCalcScreen = () => {
     }
   };
 
-  // CURRENT ISSUE: cannot enter decimals
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ height: '100%' }}>
         <View style={styles.view}>
-        <Text style={styles.text}>Blood glucose</Text>
+          <Text style={styles.text}>Blood glucose</Text>
           <TextInput
             style={styles.input}
             keyboardType="decimal-pad"
@@ -67,6 +66,9 @@ const insulinCalcScreen = () => {
             value={carbs}
             onChangeText={(text) => setCarbs(text)}
           />
+          <TouchableOpacity onPress={() => router.push('/screens/logFoodScreen')}>
+            <Text style={styles.text}>Log food (optional)</Text>
+          </TouchableOpacity>
           <Text style={styles.text}>Ratio</Text>
           <TextInput
             style={styles.input}
@@ -74,9 +76,6 @@ const insulinCalcScreen = () => {
             value={ratio}
             onChangeText={(text) => setRatio(text)}
           />
-          <TouchableOpacity onPress={() => router.push('/screens/logFoodScreen')}>
-            <Text style={styles.text}>Log food (optional)</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={calculateInsulinDoseAndLogEntry}>
             <Text style={styles.buttonText}>Calculate</Text>
           </TouchableOpacity>
