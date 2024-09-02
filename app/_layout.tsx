@@ -30,7 +30,6 @@ const RootLayout = () => {
         <Stack>
             {/* <Stack.Screen name="index" options={{ headerShown: false }} /> */}
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            {/* <Stack.Screen name="foodLogDetails/[query]" options={{ headerShown: false, title: 'Modify Food Entry' }} /> */}
             <Stack.Screen name="screens/logFoodScreen" options={({navigation}) => ({
                 headerShown: true, 
                 title: 'Log Food',

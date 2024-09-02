@@ -1,14 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 
-const InsulinLogEntry = ({ log }) => {
+const InsulinLogEntry = ({ log, onDelete }) => {
   return (
     <View key={log.date} style={styles.logEntry}>
-      <Text style={styles.text}>Date: {log.date.toLocaleString()}</Text>
+      <Text style={styles.text}>Date: {new Date(log.date).toDateString()}</Text>
       <Text style={styles.text}>Insulin Dose: {log.insulinDose}</Text>
       <Text style={styles.text}>Glucose: {log.glucose}</Text>
       <Text style={styles.text}>Carbs: {log.carbs}</Text>
       <Text style={styles.text}>Ratio: {log.ratio}</Text>
+      <Button title="x" onPress={() => onDelete(log)} />
     </View>
   );
 };

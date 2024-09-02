@@ -25,13 +25,24 @@ const InsulinLogScreen = () => {
     }, [])
   );
 
+  const deleteInsulinLog = async (deleteLog) => {
+    try {
+      const updatedLogs = insulinLogs.filter(log => log !== deleteLog);
+      setInsulinLogs(updatedLogs);
+      await AsyncStorage.setItem('insulinLogs', JSON.stringify(updatedLogs));
+      console.log('Deleted insulin log:', deleteLog);
+    } catch (error) {
+      console.error('Error deleting insulin log:', error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.view}>
           <Text style={styles.text}>Insulin Logs</Text>
-          {insulinLogs.map((log) => (
-            <InsulinLogEntry key={log.date} log={log} />
+          {insulinLogs.map((log, index) => (
+            <InsulinLogEntry key={index} log={log} onDelete={deleteInsulinLog}/>
           ))}
         </View>
       </ScrollView>

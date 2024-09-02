@@ -20,6 +20,17 @@ const FoodDiaryScreen = () => {
     }
   };
 
+  const deleteFoodLog = async (deleteLog) => {
+    try {
+      const updatedLogs = foodLogs.filter(log => log !== deleteLog);
+      setFoodLogs(updatedLogs);
+      await AsyncStorage.setItem('foodLogs', JSON.stringify(updatedLogs));
+      console.log('Deleted food log:', deleteLog);
+    } catch (error) {
+      console.error('Error deleting food log:', error);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       fetchFoodLogs();
@@ -32,7 +43,7 @@ const FoodDiaryScreen = () => {
         <View style={styles.view}>
           <Text style={styles.text}>Food logs</Text>
           {foodLogs.map((log, index) => (
-            <FoodDiaryEntry key={index} {...log} />
+            <FoodDiaryEntry key={index} log={log} onDelete={deleteFoodLog}/>
           ))}
         </View>
       </ScrollView>

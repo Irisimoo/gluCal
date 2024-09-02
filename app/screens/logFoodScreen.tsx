@@ -35,6 +35,18 @@ const LogFoodScreen = () => {
     console.log(currentFoodLogs);
   }, [currentFoodLogs]);
 
+  const deleteFoodLog = async (deleteLog) => {
+    try {
+      const updatedLogs = currentFoodLogs.filter(log => log !== deleteLog);
+      setCurrentFoodLogs(updatedLogs);
+      await AsyncStorage.setItem('foodLogs', JSON.stringify(updatedLogs));
+      console.log('Deleted food log:', deleteLog);
+    } catch (error) {
+      console.error('Error deleting food log:', error);
+    }
+  };
+
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -42,7 +54,7 @@ const LogFoodScreen = () => {
           <AddFoodItemModal isVisible={isModalVisible} onClose={onModalClose} currentFoodLog={currentFoodLogs} setCurrentFoodLog={setCurrentFoodLogs}/>
           <Text style={styles.text}>Current food logs:</Text>
           {currentFoodLogs.map((log, index) => (
-            <FoodDiaryEntry key={index} {...log}/>
+            <FoodDiaryEntry key={index} log={log} onDelete={deleteFoodLog}/>
           ))}
         </View>
       </ScrollView>
