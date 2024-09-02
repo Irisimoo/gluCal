@@ -6,13 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FoodDiaryEntry from '../../components/FoodDiaryEntry';
-
-type Ingredient = {
-  foodName: string,
-  portionSize: number,
-  carbs: number, 
-  notes: string
-}
+import { Ingredient } from '../types';
 
 const LogFoodScreen = () => {
   const [currentFoodLogs, setCurrentFoodLogs] = useState<Ingredient[]>([]);

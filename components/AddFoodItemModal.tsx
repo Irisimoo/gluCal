@@ -2,33 +2,38 @@ import { View, Text, TextInput, Modal, StyleSheet, Pressable, TouchableOpacity }
 import React, { useState } from 'react'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-type Ingredient = {
-    foodName: string,
-    portionSize: number, // choose a standardized unit and convert all inputs to it (i.e. g)
-    carbs: number, // whaat unit??
-    notes: string
-}
+import { Ingredient } from '../app/types';
 
 export default function AddFoodItemModal({ isVisible, onClose, currentFoodLog, setCurrentFoodLog }) {
     const [name, setName] = useState<string>('');
-    const [portionSize, setPortionSize] = useState<number>(0);
-    const [carbs, setCarbs] = useState<number>(0);
+    const [portionSize, setPortionSize] = useState<string>('');
+    const [carbs, setCarbs] = useState<string>('');
     const [notes, setNotes] = useState<string>('');
+    const [error, setError] = useState<string>('');
 
     const LogIngredientEntry = async () => {
         try {
+            const parsedPortionSize = parseFloat(portionSize);
+            const parsedCarbs = parseFloat(carbs);
+
+            if (isNaN(parsedPortionSize) || isNaN(parsedCarbs)) {
+                setError('Please enter valid numbers for portion size and carbs.');
+                return;
+            }
+
             // add food entry to food logs
             const newFoodEntry: Ingredient = {
+                date: new Date(),
                 foodName: name,
-                portionSize: portionSize,
-                carbs: carbs,
+                portionSize: parsedPortionSize,
+                carbs: parsedCarbs,
                 notes: notes
             };
             setName('');
-            setPortionSize(0);
-            setCarbs(0);
+            setPortionSize('');
+            setCarbs('');
             setNotes('');
+            setError('');
             
             const updatedLogs = [...currentFoodLog, newFoodEntry];
             setCurrentFoodLog(updatedLogs);
@@ -48,12 +53,10 @@ export default function AddFoodItemModal({ isVisible, onClose, currentFoodLog, s
     return (
         <Modal animationType="slide" transparent={true} visible={isVisible}>
             <View style={styles.modalContent}>
+                <Pressable onPress={onClose}>
+                    <MaterialIcons name="close" color="#000" size={22} />
+                </Pressable>
                 <View style={styles.titleContainer}>
-                    <View style={styles.topComponent}>
-                        <Pressable onPress={onClose}>
-                            <MaterialIcons name="close" color="#000" size={22} />
-                        </Pressable>
-                    </View>
                     <Text style={styles.text}>Food Name</Text>
                     <TextInput
                         style={styles.input}
@@ -65,15 +68,19 @@ export default function AddFoodItemModal({ isVisible, onClose, currentFoodLog, s
                     <TextInput
                         style={styles.input}
                         keyboardType="decimal-pad"
-                        value={portionSize.toString()}
-                        onChangeText={(text) => setPortionSize(parseFloat(text))}
+                        value={portionSize}
+                        onChangeText={(text) => {
+                            setPortionSize(text);
+                        }}
                     />
                     <Text style={styles.text}>Carbs</Text>
                     <TextInput
                         style={styles.input}
                         keyboardType="decimal-pad"
-                        value={carbs.toString()}
-                        onChangeText={(text) => setCarbs(parseFloat(text))}
+                        value={carbs}
+                        onChangeText={(text) => {
+                            setCarbs(text);
+                        }}
                     />
                     <Text style={styles.text}>Notes</Text>
                     <TextInput
@@ -82,6 +89,7 @@ export default function AddFoodItemModal({ isVisible, onClose, currentFoodLog, s
                         value={notes}
                         onChangeText={(text) => setNotes(text)}
                     />
+                    {error ? <Text style={styles.errorText}>{error}</Text> : null}
                     <TouchableOpacity style={styles.button} onPress={LogIngredientEntry}>
                         <Text style={styles.buttonText}>Add Item</Text>
                     </TouchableOpacity>
@@ -91,10 +99,9 @@ export default function AddFoodItemModal({ isVisible, onClose, currentFoodLog, s
     )
 }
 
-
 const styles = StyleSheet.create({
     modalContent: {
-        height: '60%',
+        height: '65%',
         width: '90%',
         backgroundColor: '#f7f7f7',
         position: 'absolute',
@@ -117,6 +124,7 @@ const styles = StyleSheet.create({
     topComponent: {
         flexDirection: 'row',
         alignItems: 'flex-start',
+        justifyContent: 'space-between'
     },
     title: {
         color: '#000',
@@ -139,15 +147,20 @@ const styles = StyleSheet.create({
     button: {
         borderRadius: 50,
         backgroundColor: '#FE726B',
-        paddingVertical: 20,
-        paddingHorizontal: 30,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
         alignItems: 'center',
-        margin: 20,
+        margin: 10,
     },
     buttonText: {
         fontFamily: 'PublicSans',
         color: 'white',
-        fontSize: 12,
+        fontSize: 18,
         fontWeight: 'medium',
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 14,
+        marginBottom: 10,
     },
 });

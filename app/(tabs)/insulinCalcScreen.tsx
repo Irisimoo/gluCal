@@ -32,7 +32,7 @@ const insulinCalcScreen = () => {
 
       // add insulin dose entry to asyncstorage
       const newInsulinLogEntry = {
-        date: Date.now(),
+        date: new Date(),
         insulinDose: withGlucoseCorrection,
         glucose: parseFloat(glucose),
         carbs: parseFloat(carbs),

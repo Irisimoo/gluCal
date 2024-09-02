@@ -1,18 +1,12 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// make a file for types to import
-type Ingredient = {
-  foodName: string,
-  portionSize: number,
-  carbs: number, 
-  notes: string
-}
+import { Ingredient } from '../app/types';
 
 const FoodDiaryEntry = (log: Ingredient) => {
   return (
     <View style={styles.logEntry}>
+      {log.date ? (<Text style={styles.text}>Entry date: {log.date.toLocaleString()}</Text>) : null}
       <Text style={styles.text}>Food name: {log.foodName}</Text>
       <Text style={styles.text}>Portion (g): {log.portionSize}</Text>
       <Text style={styles.text}>Carbs: {log.carbs}</Text>

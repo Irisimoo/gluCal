@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 const InsulinLogEntry = ({ log }) => {
   return (
     <View key={log.date} style={styles.logEntry}>
-      <Text style={styles.text}>Date: {new Date(log.date).toLocaleString()}</Text>
+      <Text style={styles.text}>Date: {log.date.toLocaleString()}</Text>
       <Text style={styles.text}>Insulin Dose: {log.insulinDose}</Text>
       <Text style={styles.text}>Glucose: {log.glucose}</Text>
       <Text style={styles.text}>Carbs: {log.carbs}</Text>
